@@ -6,7 +6,7 @@ use {
         result::Result,
     },
     serde::{Deserialize, Serialize},
-    std::fmt::Debug,
+    std::{collections::HashMap, fmt::Debug},
     thiserror::Error,
 };
 
@@ -31,26 +31,45 @@ enum Columns<I1, I2> {
     Specified(I2),
 }
 
+/*
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Row(Vec<Value>);
+*/
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub enum Row {
+    Vec(Vec<Value>),
+    Map(HashMap<String, Value>),
+}
 
 impl From<Vec<Value>> for Row {
     fn from(values: Vec<Value>) -> Self {
-        Row(values)
+        Self::Vec(values)
     }
 }
 
 impl Row {
     pub fn get_value(&self, index: usize) -> Option<&Value> {
-        self.0.get(index)
+        match self {
+            Self::Vec(values) => values.get(index),
+            Self::Map(_) => None,
+        }
     }
 
     pub fn into_values(self) -> Vec<Value> {
-        self.0
+        match self {
+            Self::Vec(values) => values,
+            Self::Map(_) => vec![],
+        }
     }
 
     pub fn take_first_value(self) -> Result<Value> {
-        self.0
+        let values = match self {
+            Self::Vec(values) => values,
+            Self::Map(_) => vec![],
+        };
+
+        values
             .into_iter()
             .next()
             .ok_or_else(|| RowError::ConflictOnEmptyRow.into())
@@ -98,7 +117,7 @@ impl Row {
                 }
             })
             .collect::<Result<_>>()
-            .map(Self)
+            .map(Self::Vec)
     }
 
     pub fn validate(&self, column_defs: &[ColumnDef]) -> Result<()> {
