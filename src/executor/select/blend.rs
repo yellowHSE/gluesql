@@ -80,6 +80,6 @@ impl<'a, T: 'static + Debug> Blend<'a, T> {
             .await?
             .concat();
 
-        Ok(Row(values))
+        Ok(Row::from(values))
     }
 }

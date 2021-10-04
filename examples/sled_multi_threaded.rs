@@ -51,8 +51,9 @@ mod sled_multi_threaded {
             _ => panic!("Unexpected result: {:?}", result),
         };
 
-        let first_row = &rows[0];
-        let first_value = &first_row.0[0];
+        let first_row = rows.into_iter().next().unwrap();
+        let first_value = &first_row.into_values()[0];
+
         let to_greet = match first_value {
             Value::Str(to_greet) => to_greet,
             value => panic!("Unexpected type: {:?}", value),

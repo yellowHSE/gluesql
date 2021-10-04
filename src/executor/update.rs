@@ -86,14 +86,17 @@ impl<'a, T: 'static + Debug> Update<'a, T> {
     }
 
     pub async fn apply(&self, row: Row) -> Result<Row> {
-        let Row(values) = &row;
-
-        let values = values.clone().into_iter().enumerate().map(|(i, value)| {
-            self.column_defs
-                .get(i)
-                .map(|col_def| (col_def, value))
-                .ok_or_else(|| UpdateError::ConflictOnSchema.into())
-        });
+        let values = row
+            .clone()
+            .into_values()
+            .into_iter()
+            .enumerate()
+            .map(|(i, value)| {
+                self.column_defs
+                    .get(i)
+                    .map(|col_def| (col_def, value))
+                    .ok_or_else(|| UpdateError::ConflictOnSchema.into())
+            });
 
         stream::iter(values)
             .and_then(|(col_def, value)| {
@@ -108,7 +111,7 @@ impl<'a, T: 'static + Debug> Update<'a, T> {
             })
             .try_collect::<Vec<_>>()
             .await
-            .map(Row)
+            .map(Row::from)
     }
 
     pub fn all_columns(&self) -> Vec<String> {

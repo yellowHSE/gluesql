@@ -44,8 +44,8 @@ mod hello_world {
             _ => panic!("Unexpected result: {:?}", result),
         };
 
-        let first_row = &rows[0];
-        let first_value = &first_row.0[0];
+        let first_row = rows.into_iter().next().unwrap();
+        let first_value = &first_row.into_values()[0];
 
         /*
             Row values are wrapped into a value enum, on the basis of the result type

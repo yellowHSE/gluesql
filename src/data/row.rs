@@ -32,11 +32,21 @@ enum Columns<I1, I2> {
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Row(pub Vec<Value>);
+pub struct Row(Vec<Value>);
+
+impl From<Vec<Value>> for Row {
+    fn from(values: Vec<Value>) -> Self {
+        Row(values)
+    }
+}
 
 impl Row {
     pub fn get_value(&self, index: usize) -> Option<&Value> {
         self.0.get(index)
+    }
+
+    pub fn into_values(self) -> Vec<Value> {
+        self.0
     }
 
     pub fn take_first_value(self) -> Result<Value> {

@@ -284,7 +284,12 @@ impl AlterTable for SledStorage {
                         continue;
                     }
                 };
-                let row = Row(row.0.into_iter().chain(once(value.clone())).collect());
+                let row: Row = row
+                    .into_values()
+                    .into_iter()
+                    .chain(once(value.clone()))
+                    .collect::<Vec<_>>()
+                    .into();
 
                 let (snapshot, _) = snapshot.update(txid, row);
                 let snapshot = bincode::serialize(&snapshot)
@@ -399,12 +404,13 @@ impl AlterTable for SledStorage {
                         continue;
                     }
                 };
-                let row = Row(row
-                    .0
+                let row: Row = row
+                    .into_values()
                     .into_iter()
                     .enumerate()
                     .filter_map(|(i, v)| (i != column_index).then(|| v))
-                    .collect());
+                    .collect::<Vec<_>>()
+                    .into();
 
                 let (snapshot, _) = snapshot.update(txid, row);
                 let snapshot = bincode::serialize(&snapshot)

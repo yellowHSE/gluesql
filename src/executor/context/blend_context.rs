@@ -73,7 +73,7 @@ impl<'a> BlendContext<'a> {
     pub fn get_alias_values(&self, alias: &str) -> Option<Vec<Value>> {
         if self.table_alias == alias {
             let values = match &self.row {
-                Some(Row(values)) => values.clone(),
+                Some(row) => row.clone().into_values(),
                 None => self.columns.iter().map(|_| Value::Null).collect(),
             };
 
@@ -87,7 +87,7 @@ impl<'a> BlendContext<'a> {
 
     pub fn get_all_values(&'a self) -> Vec<Value> {
         let values: Vec<Value> = match &self.row {
-            Some(Row(values)) => values.clone(),
+            Some(row) => row.clone().into_values(),
             None => self.columns.iter().map(|_| Value::Null).collect(),
         };
 

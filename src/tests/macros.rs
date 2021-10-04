@@ -1,7 +1,7 @@
 #[macro_export]
 macro_rules! row {
     ( $( $p:path )* ; $( $v:expr )* ) => (
-        Row(vec![$( $p($v) ),*])
+        Row::from(vec![$( $p($v) ),*])
     )
 }
 
@@ -88,12 +88,12 @@ macro_rules! select_with_null {
     ( $( $c: tt )|* ; $( $v: expr )* ) => (
         Payload::Select {
             labels: vec![$( stringify!($c).to_owned().replace("\"", "")),+],
-            rows: vec![Row(vec![$( $v ),*])],
+            rows: vec![Row::from(vec![$( $v ),*])],
         }
     );
     ( $( $c: tt )|* ; $( $v: expr )* ; $( $( $v2: expr )* );*) => ({
         let mut rows = vec![
-            Row(vec![$( $v ),*])
+            Row::from(vec![$( $v ),*])
         ];
 
         Payload::Select {
@@ -106,12 +106,12 @@ macro_rules! select_with_null {
 #[macro_export]
 macro_rules! concat_with_null {
     ( $rows: ident ; $( $v: expr )* ) => ({
-        $rows.push(Row(vec![$( $v ),*]));
+        $rows.push(Row::from(vec![$( $v ),*]));
 
         $rows
     });
     ( $rows: ident ; $( $v: expr )* ; $( $( $v2: expr )* );* ) => ({
-        $rows.push(Row(vec![$( $v ),*]));
+        $rows.push(Row::from(vec![$( $v ),*]));
 
         concat_with_null!($rows ; $( $( $v2 )* );* )
     });

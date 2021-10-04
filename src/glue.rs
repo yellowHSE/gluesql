@@ -106,12 +106,12 @@ mod tests {
             Ok(Payload::Select {
                 labels: vec![String::from("id"), String::from("name"), String::from("is")],
                 rows: vec![
-                    Row(vec![
+                    Row::from(vec![
                         Value::I64(1),
                         Value::Str(String::from("test1")),
                         Value::Bool(true)
                     ]),
-                    Row(vec![
+                    Row::from(vec![
                         Value::I64(2),
                         Value::Str(String::from("test2")),
                         Value::Bool(false)
