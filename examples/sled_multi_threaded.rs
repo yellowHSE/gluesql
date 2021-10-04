@@ -52,7 +52,7 @@ mod sled_multi_threaded {
         };
 
         let first_row = &rows[0];
-        let first_value = &first_row[0];
+        let first_value = &first_row.0[0];
         let to_greet = match first_value {
             Value::Str(to_greet) => to_greet,
             value => panic!("Unexpected type: {:?}", value),

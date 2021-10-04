@@ -71,7 +71,7 @@ mod tests {
     use {
         crate::{
             store::{GStore, GStoreMut},
-            Glue, Payload, Value,
+            Glue, Payload, Row, Value,
         },
         std::fmt::Debug,
     };
@@ -106,17 +106,17 @@ mod tests {
             Ok(Payload::Select {
                 labels: vec![String::from("id"), String::from("name"), String::from("is")],
                 rows: vec![
-                    vec![
+                    Row(vec![
                         Value::I64(1),
                         Value::Str(String::from("test1")),
                         Value::Bool(true)
-                    ],
-                    vec![
+                    ]),
+                    Row(vec![
                         Value::I64(2),
                         Value::Str(String::from("test2")),
                         Value::Bool(false)
-                    ]
-                ]
+                    ]),
+                ],
             })
         );
     }
