@@ -45,7 +45,7 @@ CREATE TABLE Test (
     test!(
         Ok(select_with_null!(
             id     | num    | name;
-            I64(1)   I64(2)   s!("Hello");
+            I64(4)   I64(2)   s!("Hello");
             I64(3)   I64(4)   s!("World");
             I64(1)   I64(9)   Null;
             I64(4)   I64(7)   s!("Thursday")
