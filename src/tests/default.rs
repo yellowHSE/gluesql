@@ -30,7 +30,7 @@ test_case!(default, async move {
             "SELECT * FROM Test;",
             select_with_null!(
                 id     | num     | flag;
-                I64(8)   I64(80)   Bool(true);
+                I64(7)   I64(80)   Bool(true);
                 I64(1)   I64(10)   Bool(false);
                 I64(2)   I64(20)   Bool(false);
                 I64(1)   I64(30)   Null;
