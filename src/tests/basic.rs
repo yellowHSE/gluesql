@@ -34,7 +34,7 @@ CREATE TABLE TestA (
         Ok(select!(
             id  | num | name
             I64 | I64 | Str;
-            1     2     "Hello".to_owned();
+            4     2     "Hello".to_owned();
             1     9     "World".to_owned();
             3     4     "Great".to_owned();
             4     7     "Job".to_owned()
